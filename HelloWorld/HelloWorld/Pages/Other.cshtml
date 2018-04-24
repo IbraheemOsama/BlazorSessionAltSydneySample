@@ -1,0 +1,98 @@
+﻿@page "/other/{text}"
+    @addTagHelper *, HelloWorldServices
+    @using HelloWorldServices;
+    @implements IDisposable
+        @inherits ComponentBase
+
+            <h1>@Text</h1>
+            <h1>Promot: @Prompt</h1>
+            <hr />
+            <div>
+                <div class="row">
+                    <button onclick="@CallJavascript" class="btn">Call Javascript from C#</button>
+                </div>
+
+
+                <br />
+
+                <div class="row">
+                    <button onclick="letsAlert()" class="btn">Call Javascript</button>
+                </div>
+
+                @if (forecasts == null)
+                {
+                    <p><em>Loading...</em></p>
+                }
+                else
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Temp. (C)</th>
+                                <th>Temp. (F)</th>
+                                <th>Summary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var forecast in forecasts)
+                            {
+                                <tr>
+                                    <td>@forecast.Date.ToShortDateString()</td>
+                                    <td>@forecast.TemperatureC</td>
+                                    <td>@forecast.TemperatureF</td>
+                                    <td>@forecast.Summary</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+            </div>
+
+            @try
+            {
+                throw new InvalidOperationException("You did something invalid.");
+            }
+            catch (Exception ex)
+            {
+                <p>The exception message: @ex.Message</p>
+            }
+            finally
+            {
+                <p>The finally statement.</p>
+            }
+
+
+            @functions {
+            WeatherForecast[] forecasts;
+            public string Prompt { get; set; } = "Nothing here yet";
+
+            void CallJavascript()
+            {
+                Prompt = ExampleJsInterop.Prompt("Javascript call");
+            }
+
+            protected override async Task OnInitAsync()
+            {
+                Console.WriteLine("init");
+                forecasts = await Repository.GetWeatherForecastsAsync();
+            }
+
+            protected override async Task OnParametersSetAsync()
+            {
+                Console.WriteLine("set params");
+            }
+
+            public void Dispose()
+            {
+                Console.WriteLine("Dispose");
+            }
+
+            protected override bool ShouldRender()
+            {
+                var renderUI = true;
+                Console.WriteLine("Should Render");
+                return renderUI;
+            }
+            }

@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>HelloWorld</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <app>Loading...</app>
+
+    <script src="css/bootstrap/bootstrap-native.min.js"></script>
+    <script type="blazor-boot"></script>
+
+    <script>
+        function letsAlert() {
+            const assemblyName = 'HelloWorldServices';
+            const namespace = 'HelloWorldServices';
+            const typeName = 'StringUtil';
+            const methodName = 'Concat';
+
+            const concatMethod = Blazor.platform.findMethod(
+                assemblyName,
+                namespace,
+                typeName,
+                methodName
+            );
+
+            let arg1AsDotNetString = Blazor.platform.toDotNetString('Hello ');
+            let arg2AsDotNetString = Blazor.platform.toDotNetString('Blazor ');
+            let arg3AsDotNetString = Blazor.platform.toDotNetString('(from JS)!');
+
+            let resultAsDotNetString = Blazor.platform.callMethod(concatMethod, null, [
+                arg1AsDotNetString,
+                arg2AsDotNetString,
+                arg3AsDotNetString
+            ]);
+
+            let resultAsJavaScriptString = Blazor.platform.toJavaScriptString(resultAsDotNetString);
+            alert(resultAsJavaScriptString);
+        }
+    </script>
+</body>
+</html>

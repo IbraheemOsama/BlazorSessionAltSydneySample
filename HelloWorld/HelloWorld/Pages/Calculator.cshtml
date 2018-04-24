@@ -1,0 +1,47 @@
+﻿@page "/calculator"
+    @addTagHelper *, HelloWorldServices
+    @using HelloWorldServices;
+
+
+    <h1>Blazor Calculator</h1>
+    <hr />
+    <div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <p>First Number</p>
+            </div>
+            <div class="col-sm-4">
+                <input placeholder="Enter First Number" bind="@num1" />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <p>Second Number</p>
+            </div>
+            <div class="col-sm-4">
+                <input placeholder="Enter Second Number" bind="@num2" />
+            </div>
+        </div>
+        <br />
+
+        <FinalResult Value="@finalResult" />
+        <br />
+        <div class="row">
+            <button onclick="@AddNumbers" class="btn">Add (+)</button>
+        </div>
+
+    </div>
+
+    @functions {
+    string num1;
+    string num2;
+    string finalResult;
+    void AddNumbers()
+    {
+        finalResult = (double.Parse(num1) + double.Parse(num2)).ToString();
+        Console.WriteLine(finalResult);
+    }
+
+    }
